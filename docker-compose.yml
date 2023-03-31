@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  mysql-test:
+    image: "mysql:latest"
+    ports:
+      - "3309:3306"
+    command: "--default-authentication-plugin=mysql_native_password --init-file /create_table.sql"
+    environment: 
+      MYSQL_ROOT_PASSWORD: "root123456"
+      MYSQL_DATABASE: "app"
+      MYSQL_PASSWORD: "root123456"
+    volumes:
+      - ./create_table.sql:/create_table.sql
+  app-test:
+    build: .
+    depends_on:
+      - mysql-test
+    ports:
+      - "8088:8080"
